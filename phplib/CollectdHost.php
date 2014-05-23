@@ -15,6 +15,9 @@ class CollectdHost {
         echo "<h2> $this->hostname </h2>";
         $this->render_cpus();
         $this->render_memory();
+        if (count($this->fss) > 0) {
+            $this->render_filesystems();
+        }
         if ($this->apache) {
             $this->render_apache();
         }
@@ -59,6 +62,22 @@ class CollectdHost {
         echo('<div class="col-md-4">');
         $graph->render($metric);
         echo('</div>');
+        echo "</div>";
+    }
+
+    function render_filesystems() {
+        $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+        echo '<h2> Filesystems </h2>';
+        echo '<div class="row">';
+        foreach ($this->fss as $fs) {
+            $graph->set_title($fs);
+            $sub = "aliasSub(collectd.{$this->san_name}.df-${fs}.*,'collectd.{$this->san_name}.df-${fs}.*df_','')";
+            $metric = "stacked({$sub})";
+            echo('<div class="col-md-4">');
+            $graph->render($metric);
+            echo('</div>');
+
+        }
         echo "</div>";
     }
 
