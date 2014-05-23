@@ -71,8 +71,8 @@ class CollectdHost {
         echo '<div class="row">';
         foreach ($this->fss as $fs) {
             $graph->set_title($fs);
-            $sub = "aliasSub(collectd.{$this->san_name}.df-${fs}.*,'collectd.{$this->san_name}.df-${fs}.*df_','')";
-            $metric = "stacked({$sub})";
+            $graph->stacked(true);
+            $metric = "aliasSub(collectd.{$this->san_name}.df-${fs}.*,'collectd.{$this->san_name}.df-${fs}.*df_','')";
             echo('<div class="col-md-4">');
             $graph->render($metric);
             echo('</div>');
