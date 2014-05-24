@@ -12,7 +12,6 @@ class CollectdHost {
     }
 
     function render() {
-        echo "<h2> $this->hostname </h2>";
         $this->render_cpus();
         $this->render_memory();
         if (count($this->fss) > 0) {
