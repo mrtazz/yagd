@@ -46,7 +46,8 @@ class CollectdHost {
         $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
         echo '<h2> Memory Info </h2>';
         echo '<div class="row">';
-        $metric = "stacked(collectd." . $this->san_name . ".memory.memory-*)";
+        $graph->stacked(true);
+        $metric = "collectd." . $this->san_name . ".memory.memory-*";
         echo('<div class="col-md-4">');
         $graph->render($metric);
         echo('</div>');
@@ -98,7 +99,8 @@ class CollectdHost {
         }
         echo "</div>";
         echo '<div class="row">';
-        $metric = "stacked(collectd." . $this->san_name . ".apache-apache80.apache_scoreboard-*)";
+        $graph->stacked(true);
+        $metric = "collectd." . $this->san_name . ".apache-apache80.apache_scoreboard-*";
         echo('<div class="col-md-4">');
         $graph->render($metric);
         echo('</div>');
