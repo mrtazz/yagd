@@ -6,6 +6,9 @@ Yet Another Graphite Dashboard - because why not? It's heavily inspired by
 provides a very small subset of features. If you have a lot of hosts or need
 advanced features I'd recommend checking that out.
 
+## Look
+![yagd look](http://s3itch.unwiredcouch.com/dashboards-20140524-130506.jpg)
+
 ## Requirements
 - PHP >= 5.4
 - Graphite
