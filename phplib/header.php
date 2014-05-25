@@ -46,6 +46,13 @@ include_once("../config.php");
             }
             ?>
           </ul>
+            <?php
+                if (!empty($selectbox)) {
+                    echo "<div class='nav navbar-nav pull-right>'>";
+                    echo $selectbox;
+                    echo "</div>";
+                }
+            ?>
         </div><!--/.nav-collapse -->
       </div>
     </div>
