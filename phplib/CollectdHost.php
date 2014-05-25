@@ -3,17 +3,20 @@ require_once("GraphiteGraph.php");
 
 class CollectdHost {
 
-    function __construct($hostname, $cpus = 0, $fss = [], $apache = false) {
+    function __construct($hostname, $cpus = 0, $fss = [], $apache = false,
+                         $interfaces = []) {
         $this->hostname = $hostname;
         $this->san_name = str_replace('.', '_', $hostname);
         $this->cpus = $cpus;
         $this->fss = $fss;
         $this->apache = $apache;
+        $this->interfaces = $interfaces;
     }
 
     function render() {
         $this->render_cpus();
         $this->render_memory();
+        $this->render_interfaces();
         if (count($this->fss) > 0) {
             $this->render_filesystems();
         }
@@ -104,6 +107,24 @@ class CollectdHost {
         echo('<div class="col-md-4">');
         $graph->render($metric);
         echo('</div>');
+        echo "</div>";
+    }
+
+    function render_interfaces() {
+        $metric_types = [ "packets", "octets", "errors" ];
+        echo '<h2> Network </h2>';
+        echo '<div class="row">';
+        foreach ($this->interfaces as $int) {
+            foreach ($metric_types as $type) {
+                $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+                $graph->set_title("{$int} {$type}/s");
+                $metric = "aliasSub(collectd.{$this->san_name}.interface-${int}.if_{$type}.*,'collectd.{$this->san_name}.interface-${int}.if_{$type}.','')";
+                echo('<div class="col-md-4">');
+                $graph->render($metric);
+                echo('</div>');
+            }
+
+        }
         echo "</div>";
     }
 
