@@ -71,7 +71,8 @@ foreach($CONFIG["hosts"] as $host => $data) {
 
     $fss = empty($data["filesystems"]) ? [] : $data["filesystems"];
 
-    $server = new CollectdHost($host, $data["cpus"], $fss, ($data["apache"] == true));
+    $server = new CollectdHost($host, $data["cpus"], $fss, ($data["apache"] == true),
+                               $data["interfaces"]);
     $server->set_graphite_host($CONFIG["graphitehost"]);
     echo "<h2> {$host} </h2>";
     $server->render();
@@ -81,3 +82,32 @@ include_once("../phplib/footer.php");
 
 ```
 
+### Inject a select box into the navbar
+For the host page for example you might wanna have an easy way to only show
+one host. For that you can inject a select box into the header navbar like
+this:
+
+```
+<?php
+
+$selectbox = "";
+$selectbox .= "<form method='get' action='hosts.php' style='margin-top: 15px'class='pull-right'>";
+$selectbox .= "   <select name='hostname' onchange='this.form.submit()'>";
+    foreach ($CONFIG["hosts"] as $host => $data) {
+        $selected = ($_GET["hostname"] == $host) ? "selected" : "";
+        $selectbox .= "<option value='{$host}' {$selected}>{$host}</option>";
+}
+$selectbox .= "</select>";
+$selectbox .= "</form>";
+
+include_once("../phplib/header.php");
+
+if (empty($_GET["hostname"])) {
+    $hosts = $CONFIG["hosts"];
+} else {
+    $hosts = [ $_GET["hostname"] => $CONFIG["hosts"][$_GET["hostname"]] ];
+}
+```
+
+This will show the content of `$selectbox` in the header and only show the
+actually selected host (if one was selected) on the page.
