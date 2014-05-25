@@ -11,15 +11,32 @@ class GraphiteGraph {
         $this->title = $title;
     }
 
+    /**
+     * set the title of the graph when rendering
+     *
+     * Parameter
+     *  $title - title of the graph
+     */
     function set_title($title="") {
         $this->title = $title;
     }
 
+    /**
+     * set whether or not to render graphs stacked
+     *
+     * Parameter
+     *  $val - true or false
+     */
     function stacked($val) {
         $this->stacked = $val;
     }
 
-
+    /**
+     * Render a graphite metric in an <img> HTML tag in place
+     *
+     * Parameter
+     *  $target - Graphite metric to render
+     */
     function render($target) {
         $url = str_replace("{{THETARGET}}", $target, $this->baseurl);
         if (!empty($this->title)) {
@@ -29,6 +46,21 @@ class GraphiteGraph {
             $url .= "&areaMode=stacked";
         }
         print('<img src="' . $url . '"></img>');
+    }
+
+    /**
+     * get only the latest value of a timeseries
+     *
+     * Parameter
+     *  $target - Graphite metric to get
+     *
+     * Returns the number
+     */
+    function get_last_value($target) {
+        $url = str_replace("{{THETARGET}}", $target, $this->baseurl);
+        $val = explode(",", file_get_contents("{$url}&format=raw"));
+        $val = array_filter($val, function ($v) { return trim($v) !== "None"; });
+        return end($val);
     }
 
 }

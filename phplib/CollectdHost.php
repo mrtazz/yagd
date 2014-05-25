@@ -57,15 +57,22 @@ class CollectdHost {
         echo "</div>";
     }
 
-    function render_uptime() {
+    function render_uptime($as_days=false) {
         $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
-        echo '<h2> uptime </h2>';
-        echo '<div class="row">';
         $metric = "collectd." . $this->san_name . ".uptime.uptime";
-        echo('<div class="col-md-4">');
-        $graph->render($metric);
-        echo('</div>');
-        echo "</div>";
+
+        if ($as_days === true) {
+            $val = $graph->get_last_value($metric);
+            $days = intval($val / 86400);
+            print "{$days} days";
+        } else {
+            echo '<h2> uptime </h2>';
+            echo '<div class="row">';
+            echo('<div class="col-md-4">');
+            $graph->render($metric);
+            echo('</div>');
+            echo "</div>";
+        }
     }
 
     function render_filesystems() {
