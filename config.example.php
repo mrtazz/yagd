@@ -11,7 +11,8 @@ $CONFIG = [
         "foo.example.com" => [
             "cpus" => 2,
             "apache" => true,
-            "filesystems" => [ 'root', 'var', ]
+            "interfaces" => ['eth0'],
+            "filesystems" => [ 'root', 'var' ]
             ]
         ]
     ];
