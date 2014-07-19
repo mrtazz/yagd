@@ -1,5 +1,11 @@
 <?php
 include_once("../config.php");
+function echoActiveClassIfRequestMatches($requestUri)
+{
+    if ($_SERVER['REQUEST_URI'] == $requestUri) {
+        return "class='active'";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,9 +46,9 @@ include_once("../config.php");
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
+            <li <?=echoActiveClassIfRequestMatches("/")?>><a href="/">Home</a></li>
             <?php foreach ($CONFIG['navitems'] as $name => $url) {
-                echo "<li><a href='{$url}'>{$name}</a></li>";
+                echo "<li " . echoActiveClassIfRequestMatches($url) ."><a href='{$url}'>{$name}</a></li>";
             }
             ?>
           </ul>
