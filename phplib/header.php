@@ -54,7 +54,7 @@ function echoActiveClassIfRequestMatches($requestUri)
           </ul>
             <?php
                 if (!empty($selectbox)) {
-                    echo "<div class='nav navbar-nav pull-right>'>";
+                    echo "<div class='nav navbar-nav navbar-right pull-right>'>";
                     echo $selectbox;
                     echo "</div>";
                 }
