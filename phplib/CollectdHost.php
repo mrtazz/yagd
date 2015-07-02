@@ -31,6 +31,9 @@ class CollectdHost {
     }
 
     function render_cpus() {
+        if ($this->cpus === 0) {
+            return;
+        }
         $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
         echo '<h2> CPU Info </h2>';
         echo '<div class="row">';
