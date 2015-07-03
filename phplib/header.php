@@ -52,9 +52,12 @@ function echoActiveClassIfRequestMatches($requestUri)
             }
             ?>
           </ul>
+            <div class='nav navbar-nav navbar-left'>
+              <?php include_once('time_select.php'); ?>
+            </div>
             <?php
                 if (!empty($selectbox)) {
-                    echo "<div class='nav navbar-nav navbar-right pull-right>'>";
+                    echo "<div class='nav navbar-nav navbar-right'>";
                     echo $selectbox;
                     echo "</div>";
                 }
