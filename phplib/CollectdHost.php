@@ -3,6 +3,8 @@ require_once("GraphiteGraph.php");
 
 class CollectdHost {
 
+    protected $additional_metrics;
+
     function __construct($hostname, $cpus = 0, $fss = [], $apache = false,
                          $interfaces = []) {
         $this->hostname = $hostname;
@@ -11,6 +13,19 @@ class CollectdHost {
         $this->fss = $fss;
         $this->apache = $apache;
         $this->interfaces = $interfaces;
+        $this->additional_metrics = [];
+    }
+
+    function get_additional_metrics() {
+        return $this->additional_metrics;
+    }
+
+    function set_additional_metrics($metrics) {
+        $this->additional_metrics = $metrics;
+    }
+
+    function append_additional_metric($metric) {
+        $this->additional_metrics[] = $metric;
     }
 
     function render() {
@@ -24,6 +39,7 @@ class CollectdHost {
             $this->render_apache();
         }
         $this->render_uptime();
+        $this->render_additional_metrics();
     }
 
     function set_graphite_host($host) {
@@ -58,6 +74,21 @@ class CollectdHost {
         $graph->render($metric);
         echo('</div>');
         echo "</div>";
+    }
+
+    function render_additional_metrics() {
+        foreach($this->additional_metrics as $name=>$metrics) {
+            echo "<h2> {$name} </h2>";
+            foreach ($metrics as $title=>$metric) {
+                $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+                $graph->set_title($title);
+                echo '<div class="row">';
+                echo('<div class="col-md-4">');
+                $graph->render($metric);
+                echo('</div>');
+                echo "</div>";
+            }
+        }
     }
 
     function render_uptime($as_days=false) {

@@ -52,7 +52,12 @@ $CONFIG['hosts'] = [
             "cpus" => 2,
             "apache" => true,
             "filesystems" => [ 'root', 'var', ]
-            ]
+            ],
+            "additional_metrics" => [
+                "disk temp" => [
+                "disk temperature" => "collectd.foo_example_com.disktemp-ada*.current",
+                ]
+            ],
         ]
     ];
 ```
