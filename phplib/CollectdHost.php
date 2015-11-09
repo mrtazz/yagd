@@ -79,15 +79,15 @@ class CollectdHost {
     function render_additional_metrics() {
         foreach($this->additional_metrics as $name=>$metrics) {
             echo "<h2> {$name} </h2>";
+                echo '<div class="row">';
             foreach ($metrics as $title=>$metric) {
                 $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
                 $graph->set_title($title);
-                echo '<div class="row">';
                 echo('<div class="col-md-4">');
                 $graph->render($metric);
                 echo('</div>');
-                echo "</div>";
             }
+                echo "</div>";
         }
     }
 
