@@ -14,7 +14,8 @@ if (isset($CONFIG["times"])) {
 <select name='from' onchange='this.form.submit()'>
 <?php
     foreach ($TIMES as $timefrom) {
-        $selected = ($_GET["from"] == "-${timefrom}") ? "selected" : "";
+        $current = $_GET["from"] ?: "-4hours";
+        $selected = ($current == "-${timefrom}") ? "selected" : "";
         echo "<option value='-{$timefrom}' {$selected}>{$timefrom}</option>";
 }
 ?>
