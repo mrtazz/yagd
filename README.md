@@ -1,5 +1,7 @@
 # yagd
 
+[![Build Status](https://travis-ci.org/mrtazz/yagd.svg?branch=master)](https://travis-ci.org/mrtazz/yagd)
+
 ## Overview
 Yet Another Graphite Dashboard - because why not? It's heavily inspired by
 [the Etsy dashboard framework](https://github.com/etsy/dashboard) but only
