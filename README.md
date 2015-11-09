@@ -9,7 +9,7 @@ provides a very small subset of features. If you have a lot of hosts or need
 advanced features I'd recommend checking that out.
 
 ## Look
-![yagd look](http://s3itch.unwiredcouch.com/dashboards-20140524-130506.jpg)
+![yagd look](http://s3itch.unwiredcouch.com/Dashboards-20151108-214111.jpg)
 
 ## Requirements
 - PHP >= 5.4
