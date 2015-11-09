@@ -1,7 +1,9 @@
 language: php
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-
+- 5.4
+- 5.5
+- 5.6
 script: make test
+env:
+  global:
+    secure: NQ0AreRChueYF5bRi47X8i/dtf9P2F+PzFP0iGjJPsqV7IgvCO1u6MJWiVLFFvvgNoR+UEIqcsUZnELeJ/NtREhj/8GM/+UOOQcFY6eNPm4MRpxx8PPKYMC4PQ2CJNoQcVwZ9RHipuQVCoMTbEVduG9vml5CreFY6a+GA/akcvM=
