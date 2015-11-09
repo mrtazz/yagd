@@ -42,15 +42,21 @@ class CollectdHost {
         $this->render_additional_metrics();
     }
 
-    function set_graphite_host($host) {
+    function set_graphite_configuration($host, $legend = null) {
         $this->graphite_host = $host;
+        $this->graphite_legend = $legend;
+    }
+
+    function get_graph() {
+        return new GraphiteGraph($this->graphite_host, $_GET["from"],
+                                 null, $this->graphite_legend);
     }
 
     function render_cpus() {
         if ($this->cpus === 0) {
             return;
         }
-        $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+        $graph = $this->get_graph();
         echo '<h2> CPU Info </h2>';
         echo '<div class="row">';
         for ($i = 0; $i < $this->cpus; $i++) {
@@ -65,7 +71,7 @@ class CollectdHost {
     }
 
     function render_memory() {
-        $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+        $graph = $this->get_graph();
         echo '<h2> Memory Info </h2>';
         echo '<div class="row">';
         $graph->stacked(true);
@@ -81,7 +87,7 @@ class CollectdHost {
             echo "<h2> {$name} </h2>";
                 echo '<div class="row">';
             foreach ($metrics as $title=>$metric) {
-                $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+                $graph = $this->get_graph();
                 $graph->set_title($title);
                 echo('<div class="col-md-4">');
                 $graph->render($metric);
@@ -92,7 +98,7 @@ class CollectdHost {
     }
 
     function render_uptime($as_days=false) {
-        $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+        $graph = $this->get_graph();
         $metric = "collectd." . $this->san_name . ".uptime.uptime";
 
         if ($as_days === true) {
@@ -110,7 +116,7 @@ class CollectdHost {
     }
 
     function render_filesystems() {
-        $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+        $graph = $this->get_graph();
         echo '<h2> Filesystems </h2>';
         echo '<div class="row">';
         foreach ($this->fss as $fs) {
@@ -132,7 +138,7 @@ class CollectdHost {
             'apache_idle_workers',
             'apache_requests',
         );
-        $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+        $graph = $this->get_graph();
         echo '<h2> Apache Info </h2>';
         echo '<div class="row">';
         foreach ($properties as $property) {
@@ -157,7 +163,7 @@ class CollectdHost {
         echo '<div class="row">';
         foreach ($this->interfaces as $int) {
             foreach ($metric_types as $type) {
-                $graph = new GraphiteGraph($this->graphite_host, $_GET["from"]);
+                $graph = $this->get_graph();
                 $graph->set_title("{$int} {$type}/s");
                 $metric = "aliasSub(collectd.{$this->san_name}.interface-${int}.if_{$type}.*,'collectd.{$this->san_name}.interface-${int}.if_{$type}.','')";
                 echo('<div class="col-md-4">');
