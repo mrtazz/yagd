@@ -7,7 +7,8 @@ include_once("header.php");
 <?php
     foreach ( $metrics as $metric) {
 
-        $graph = new GraphiteGraph($CONFIG['graphitehost'], $_GET["from"]);
+        $graph = new GraphiteGraph($CONFIG['graphite']['host'], $_GET["from"],
+                                   null, $CONFIG['graphite']['hidelegend']);
         echo('<div class="col-md-4">');
         $graph->render($metric);
         echo('</div>');
