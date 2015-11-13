@@ -3,12 +3,11 @@
 class GraphiteGraph {
 
     function __construct($graphitehost, $from = null, $title = null,
-                         $hide_legend = null) {
-        if (is_null($from)) {
-            $from = "-4h";
-        }
+                         $hide_legend = null, $width = null) {
+        $this->from = $from ?: "-4h";
+        $this->width = $width ?: "400";
         $this->graphitehost = $graphitehost;
-        $this->baseurl = $graphitehost . "/render?width=400&from=$from&target={{THETARGET}}";
+        $this->baseurl = $graphitehost . "/render?width={$this->width}&from={$this->from}&target={{THETARGET}}";
         $this->title = $title;
         $this->set_legend($hide_legend);
     }
