@@ -84,7 +84,7 @@ foreach($CONFIG["hosts"] as $host => $data) {
 
     $server = new CollectdHost($host, $data["cpus"], $fss, ($data["apache"] == true),
                                $data["interfaces"]);
-    $server->set_graphite_host($CONFIG["graphitehost"]);
+    $server->set_graphite_configuration($CONFIG["graphite"]["host"]);
     echo "<h2> {$host} </h2>";
     $server->render();
 }
