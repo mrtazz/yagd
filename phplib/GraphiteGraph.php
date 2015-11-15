@@ -58,6 +58,18 @@ class GraphiteGraph {
      *  $target - Graphite metric to render
      */
     function render($target) {
+        print($this->build_graph_img_tag($target));
+    }
+
+    /**
+     * Build a graphite metric in an <img> HTML tag and return it
+     *
+     * Parameter
+     *  $target - Graphite metric to render
+     *
+     * Returns the graph img tag as a string
+     */
+    function build_graph_img_tag($target) {
         $url = str_replace("{{THETARGET}}", $target, $this->baseurl);
         if (!empty($this->title)) {
             $url .= "&title={$this->title}";
@@ -66,7 +78,7 @@ class GraphiteGraph {
             $url .= "&areaMode=stacked";
         }
         $url .= $this->legend;
-        print('<img src="' . $url . '"></img>');
+        return '<img src="' . $url . '"></img>';
     }
 
     /**
