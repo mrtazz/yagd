@@ -4,7 +4,7 @@
 
 test:
 	composer install
-	./vendor/bin/phpunit tests/*
+	./vendor/bin/phpunit -c tests/phpunit.xml
 
 NAME=yagd
 VERSION = $(shell git describe --tags --always --dirty)
@@ -38,4 +38,3 @@ deploy-docs: docs
 	touch . && git add -A . && \
 	git commit -m "rebuild pages at $(VERSION)" && \
 	git push -q upstream HEAD:gh-pages
-
