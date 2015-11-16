@@ -2,6 +2,8 @@
 require_once("../config.php");
 require_once("../phplib/GraphiteGraph.php");
 include_once("header.php");
+
+use Yagd\GraphiteGraph;
 ?>
 <div class="row">
 <?php

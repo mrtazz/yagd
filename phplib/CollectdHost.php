@@ -1,4 +1,7 @@
 <?php
+
+namespace Yagd;
+
 require_once("GraphiteGraph.php");
 
 class CollectdHost {

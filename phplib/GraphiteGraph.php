@@ -1,5 +1,7 @@
 <?php
 
+namespace Yagd;
+
 class GraphiteGraph {
 
     private $stacked = false;

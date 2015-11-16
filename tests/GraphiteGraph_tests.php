@@ -1,12 +1,14 @@
 <?php
 require_once("phplib/GraphiteGraph.php");
 
+use Yagd\GraphiteGraph;
+
 class GraphiteGraphTest extends PHPUnit_Framework_TestCase
 {
     public function testInstantiation()
     {
         $graph = new GraphiteGraph("https://graphite.example.com");
-        $this->assertInstanceOf('GraphiteGraph', $graph);
+        $this->assertInstanceOf('Yagd\GraphiteGraph', $graph);
     }
 
     public function testDefaultGraphImgTag()
