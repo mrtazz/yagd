@@ -22,7 +22,11 @@ function echoActiveClassIfRequestMatches($requestUri)
     <!-- Optional theme -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
-    <link rel="stylesheet" href="/css/yagd.css">
+    <style>
+        body {
+            padding-top: 65px;
+        }
+    </style>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
