@@ -2,6 +2,8 @@
 
 class GraphiteGraph {
 
+    private $stacked = false;
+
     function __construct($graphitehost, $from = null, $title = null,
                          $hide_legend = null, $width = null) {
         $this->from = $from ?: "-4h";
