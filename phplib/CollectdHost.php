@@ -57,6 +57,7 @@ class CollectdHost {
             return;
         }
         $graph = $this->get_graph();
+        $graph->stacked(true);
         echo '<h2> CPU Info </h2>';
         echo '<div class="row">';
         for ($i = 0; $i < $this->cpus; $i++) {
