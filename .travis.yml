@@ -7,6 +7,7 @@ php:
 script: make test
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && make deploy-docs
+  - php vendor/bin/coveralls -v
 env:
   global:
     secure: NQ0AreRChueYF5bRi47X8i/dtf9P2F+PzFP0iGjJPsqV7IgvCO1u6MJWiVLFFvvgNoR+UEIqcsUZnELeJ/NtREhj/8GM/+UOOQcFY6eNPm4MRpxx8PPKYMC4PQ2CJNoQcVwZ9RHipuQVCoMTbEVduG9vml5CreFY6a+GA/akcvM=
