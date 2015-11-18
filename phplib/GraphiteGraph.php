@@ -66,6 +66,18 @@ class GraphiteGraph {
     }
 
     /**
+     * Get the full Graphite URL for a metric
+     *
+     * Parameter
+     *  $metric - the metric to fill in for the URL
+     *
+     * Returns the full URL as a string
+     */
+    function get_graphite_url_for_metric($metric) {
+        return str_replace("{{THETARGET}}", $metric, $this->baseurl);
+    }
+
+    /**
      * Build a graphite metric in an <img> HTML tag and return it
      *
      * Parameter
@@ -74,7 +86,7 @@ class GraphiteGraph {
      * Returns the graph img tag as a string
      */
     function build_graph_img_tag($target) {
-        $url = str_replace("{{THETARGET}}", $target, $this->baseurl);
+        $url = $this->get_graphite_url_for_metric($target);
         if (!empty($this->title)) {
             $url .= "&title={$this->title}";
         }
@@ -89,13 +101,15 @@ class GraphiteGraph {
      * get only the latest value of a timeseries
      *
      * Parameter
-     *  $target - Graphite metric to get
+     *  $target   - Graphite metric to get
+     *  $raw_data - raw data to mock out for testing
      *
-     * Returns the number
+     * Returns the last value of the timeseries as a number
      */
-    function get_last_value($target) {
-        $url = str_replace("{{THETARGET}}", $target, $this->baseurl);
-        $val = explode(",", file_get_contents("{$url}&format=raw"));
+    function get_last_value($target, $raw_data=null) {
+        $url = $this->get_graphite_url_for_metric($target);
+        if (is_null($raw_data)) { $raw_data = file_get_contents("{$url}&format=raw"); }
+        $val = explode(",", $raw_data );
         $val = array_filter($val, function ($v) { return trim($v) !== "None"; });
         return end($val);
     }
