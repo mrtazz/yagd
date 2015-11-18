@@ -21,14 +21,15 @@ advanced features I'd recommend checking that out.
 - Graphite
 
 ## Installation
-- clone the repo
+- in your dashboards repo, run: `composer require mrtazz/yagd`
 - copy `config.example.php` to `config.php` and adapt it
+- write php to create your dashboards
 
 ## Usage examples
 
 ### Generic dashboards
-There is a generic `page.php` file included which will just include all
-Graphite graphs you have in an array called `$metrics`:
+There is a generic `Page.php` class included which can just include all
+Graphite graphs you have in an array called `$metrics` like this:
 
 ```
 <?php
@@ -44,7 +45,8 @@ $metrics = array(
     'carbon.agents.foo_example_com-a.updateOperations',
 );
 
-include_once("../phplib/page.php");
+$page = new Page($CONFIG);
+$page->render_full_page_with_metrics($metrics);
 ```
 
 ### Display CollectD host data
@@ -75,9 +77,16 @@ And then drop something like this into e.g. `htdocs/hosts.php`:
 ```
 <?php
 
+require __DIR__ . '/../vendor/autoload.php';
+
 include_once("../config.php");
-require_once "../phplib/CollectdHost.php";
-include_once("../phplib/header.php");
+
+use Yagd\CollectdHost;
+use Yagd\Page;
+
+$page = new Page($CONFIG);
+echo $page->get_header($CONFIG["title"],
+    $CONFIG["navitems"]);
 
 foreach($CONFIG["hosts"] as $host => $data) {
 
@@ -90,7 +99,7 @@ foreach($CONFIG["hosts"] as $host => $data) {
     $server->render();
 }
 
-include_once("../phplib/footer.php");
+echo $page->get_footer();
 
 ```
 
@@ -112,7 +121,10 @@ $selectbox .= "   <select name='hostname' onchange='this.form.submit()'>";
 $selectbox .= "</select>";
 $selectbox .= "</form>";
 
-include_once("../phplib/header.php");
+$page = new Page($CONFIG);
+echo $page->get_header($CONFIG["title"],
+    $CONFIG["navitems"],
+    $selectbox);
 
 if (empty($_GET["hostname"])) {
     $hosts = $CONFIG["hosts"];
