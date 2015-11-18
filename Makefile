@@ -3,6 +3,7 @@
 .PHONY: test jekyll docs clean-docs deploy-docs
 
 test:
+	mkdir -p build/logs
 	composer install
 	./vendor/bin/phpunit -c tests/phpunit.xml
 

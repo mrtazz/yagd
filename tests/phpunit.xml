@@ -1,4 +1,17 @@
 <phpunit bootstrap="bootstrap.php">
+  <logging>
+    <log type="coverage-clover" target="build/logs/clover.xml"/>
+    <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+  </logging>
+  <filter>
+    <whitelist>
+      <directory suffix=".php">../phplib</directory>
+      <exclude>
+        <directory>../vendor</directory>
+        <directory>.</directory>
+      </exclude>
+    </whitelist>
+  </filter>
   <testsuites>
     <testsuite name="yagd">
       <directory suffix="tests.php">.</directory>
