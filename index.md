@@ -6,6 +6,7 @@ title: yagd
 
 [![Build Status](https://travis-ci.org/mrtazz/yagd.svg?branch=master)](https://travis-ci.org/mrtazz/yagd)
 [![Coverage Status](https://coveralls.io/repos/mrtazz/yagd/badge.svg?branch=master&service=github)](https://coveralls.io/github/mrtazz/yagd?branch=master)
+[![Code Climate](https://codeclimate.com/github/mrtazz/yagd/badges/gpa.svg)](https://codeclimate.com/github/mrtazz/yagd)
 [![Latest Stable Version](https://poser.pugx.org/mrtazz/yagd/v/stable)](https://packagist.org/packages/mrtazz/yagd)
 [![Latest Unstable Version](https://poser.pugx.org/mrtazz/yagd/v/unstable)](https://packagist.org/packages/mrtazz/yagd) [![License](https://poser.pugx.org/mrtazz/yagd/license)](https://packagist.org/packages/mrtazz/yagd)
 
