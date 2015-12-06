@@ -1,6 +1,6 @@
 #
 
-.PHONY: test jekyll docs clean-docs deploy-docs composer phpmd
+.PHONY: test jekyll docs clean-docs deploy-docs composer phpmd coverage-html codesniffer
 
 composer:
 	composer install
@@ -9,8 +9,15 @@ test: composer
 	mkdir -p build/logs
 	./vendor/bin/phpunit -c tests/phpunit.xml
 
+coverage-html: composer
+	mkdir -p build/logs
+	./vendor/bin/phpunit -c tests/phpunit.xml --coverage-html coverage-html
+
 phpmd: composer
 	./vendor/bin/phpmd phplib/ text cleancode,codesize,controversial,design,naming,unusedcode
+
+codesniffer: composer
+	./vendor/bin/phpcs phplib
 
 NAME=yagd
 VERSION = $(shell git describe --tags --always --dirty)
