@@ -7,13 +7,13 @@ class GraphiteGraph {
     private $stacked = false;
 
     function __construct($graphitehost, $from = null, $title = null,
-                         $hide_legend = null, $width = null) {
+                         $hideLegend = null, $width = null) {
         $this->from = $from ?: "-4h";
         $this->width = $width ?: "400";
         $this->graphitehost = $graphitehost;
         $this->baseurl = $graphitehost . "/render?width={$this->width}&from={$this->from}&target={{THETARGET}}";
         $this->title = $title;
-        $this->set_legend($hide_legend);
+        $this->setLegend($hideLegend);
     }
 
     /**
@@ -22,7 +22,7 @@ class GraphiteGraph {
      * Parameter
      *  $title - title of the graph
      */
-    function set_title($title="") {
+    function setTitle($title="") {
         $this->title = $title;
     }
 
@@ -45,13 +45,12 @@ class GraphiteGraph {
      * Parameter
      *  $val - true, false or null
      */
-    function set_legend($val) {
+    function setLegend($val) {
+        $this->legend = "&hideLegend=false";
         if (is_null($val)) {
             $this->legend = "";
         } elseif ($val === true) {
             $this->legend = "&hideLegend=true";
-        } else {
-            $this->legend = "&hideLegend=false";
         }
     }
 
@@ -62,7 +61,7 @@ class GraphiteGraph {
      *  $target - Graphite metric to render
      */
     function render($target) {
-        print($this->build_graph_img_tag($target));
+        print($this->buildGraphImgTag($target));
     }
 
     /**
@@ -73,7 +72,7 @@ class GraphiteGraph {
      *
      * Returns the full URL as a string
      */
-    function get_graphite_url_for_metric($metric) {
+    function getGraphiteUrlForMetric($metric) {
         return str_replace("{{THETARGET}}", $metric, $this->baseurl);
     }
 
@@ -85,8 +84,8 @@ class GraphiteGraph {
      *
      * Returns the graph img tag as a string
      */
-    function build_graph_img_tag($target) {
-        $url = $this->get_graphite_url_for_metric($target);
+    function buildGraphImgTag($target) {
+        $url = $this->getGraphiteUrlForMetric($target);
         if (!empty($this->title)) {
             $url .= "&title={$this->title}";
         }
@@ -102,15 +101,15 @@ class GraphiteGraph {
      *
      * Parameter
      *  $target   - Graphite metric to get
-     *  $raw_data - raw data to mock out for testing
+     *  $rawData - raw data to mock out for testing
      *
      * Returns the last value of the timeseries as a number
      */
-    function get_last_value($target, $raw_data=null) {
-        $url = $this->get_graphite_url_for_metric($target);
-        if (is_null($raw_data)) { $raw_data = file_get_contents("{$url}&format=raw"); }
-        $val = explode(",", $raw_data );
-        $val = array_filter($val, function ($v) { return trim($v) !== "None"; });
+    function getLastValue($target, $rawData=null) {
+        $url = $this->getGraphiteUrlForMetric($target);
+        if (is_null($rawData)) { $rawData = file_get_contents("{$url}&format=raw"); }
+        $val = explode(",", $rawData );
+        $val = array_filter($val, function ($item) { return trim($item) !== "None"; });
         return end($val);
     }
 

@@ -106,7 +106,7 @@ class CollectdHost {
 
             $metric = "collectd." . $this->san_name . ".cpu-$i.cpu-*";
             $ret .= '<div class="col-md-4">';
-            $ret .= $graph->build_graph_img_tag($metric);
+            $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
 
         }
@@ -135,7 +135,7 @@ class CollectdHost {
         $ret .= '<h2> Memory Info </h2>';
         $ret .= '<div class="row">';
         $ret .= '<div class="col-md-4">';
-        $ret .= $graph->build_graph_img_tag($metric);
+        $ret .= $graph->buildGraphImgTag($metric);
         $ret .= '</div>';
         $ret .= '</div>';
 
@@ -163,9 +163,9 @@ class CollectdHost {
             $ret .= '<div class="row">';
             foreach ($metrics as $title=>$metric) {
                 $graph = $this->get_graph();
-                $graph->set_title($title);
+                $graph->setTitle($title);
                 $ret .= '<div class="col-md-4">';
-                $ret .= $graph->build_graph_img_tag($metric);
+                $ret .= $graph->buildGraphImgTag($metric);
                 $ret .= '</div>';
             }
                 $ret .= "</div>";
@@ -199,14 +199,14 @@ class CollectdHost {
 
         $ret = '';
         if ($as_days === true) {
-            $val = $graph->get_last_value($metric, $raw_data);
+            $val = $graph->getLastValue($metric, $raw_data);
             $days = intval($val / 86400);
             $ret = "{$days} days";
         } else {
             $ret .= '<h2> uptime </h2>';
             $ret .= '<div class="row">';
             $ret .= '<div class="col-md-4">';
-            $ret .= $graph->build_graph_img_tag($metric);
+            $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
             $ret .= '</div>';
         }
@@ -233,11 +233,11 @@ class CollectdHost {
         $ret .= '<h2> Filesystems </h2>';
         $ret .= '<div class="row">';
         foreach ($this->fss as $fs) {
-            $graph->set_title($fs);
+            $graph->setTitle($fs);
             $graph->stacked(true);
             $metric = "aliasSub(collectd.{$this->san_name}.df-${fs}.*,'collectd.{$this->san_name}.df-${fs}.*df_','')";
             $ret .= '<div class="col-md-4">';
-            $ret .= $graph->build_graph_img_tag($metric);
+            $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
 
         }
@@ -272,7 +272,7 @@ class CollectdHost {
         foreach ($properties as $property) {
             $metric = "collectd." . $this->san_name . ".apache-apache80.$property";
             $ret .= '<div class="col-md-4">';
-            $ret .= $graph->build_graph_img_tag($metric);
+            $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
         }
         $ret .= "</div>";
@@ -280,7 +280,7 @@ class CollectdHost {
         $graph->stacked(true);
         $metric = "collectd." . $this->san_name . ".apache-apache80.apache_scoreboard-*";
         $ret .= '<div class="col-md-4">';
-        $ret .= $graph->build_graph_img_tag($metric);
+        $ret .= $graph->buildGraphImgTag($metric);
         $ret .= '</div>';
         $ret .= '</div>';
 
@@ -307,12 +307,12 @@ class CollectdHost {
         foreach ($this->interfaces as $int) {
             foreach ($metric_types as $type) {
                 $graph = $this->get_graph();
-                $graph->set_title("{$int} {$type}/s");
+                $graph->setTitle("{$int} {$type}/s");
                 $metric  = "aliasSub(collectd.{$this->san_name}.";
                 $metric .= "interface-${int}.if_{$type}.*,";
                 $metric .= "'collectd.{$this->san_name}.interface-${int}.if_{$type}.','')";
                 $ret .= '<div class="col-md-4">';
-                $ret .= $graph->build_graph_img_tag($metric);
+                $ret .= $graph->buildGraphImgTag($metric);
                 $ret .= '</div>';
             }
 

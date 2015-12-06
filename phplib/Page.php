@@ -49,7 +49,7 @@ class Page
             );
 
             $ret .= '<div class="col-md-4">';
-            $ret .= $graph->build_graph_img_tag($metric);
+            $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
         }
         $ret .= '</div>';
