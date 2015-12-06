@@ -7,10 +7,10 @@ class PageTest extends PHPUnit_Framework_TestCase
 {
 
     public function setUp() {
-        $_SERVER['REQUEST_URI'] = "/foo";
 
         $this->page = new Page(["title" => "foo",
                                 "graphite" => ["host" => "http://grpht.exmpl.com"]]);
+        $this->page->setRequestURI("/foo");
     }
     public function testInstantiation()
     {
@@ -35,13 +35,13 @@ class PageTest extends PHPUnit_Framework_TestCase
   </body>
 </html>
 EOF;
-        $this->assertEquals($expected, $this->page->get_footer());
+        $this->assertEquals($expected, $this->page->getFooter());
 
     }
 
     public function testGetActiveClassIfRequestMatches() {
 
-        $this->assertEquals("class='active'", $this->page->get_active_class_if_request_matches("/foo"));
+        $this->assertEquals("class='active'", $this->page->getActiveClassIfRequestMatches("/foo"));
     }
 
     public function testGetTimeSelectBox() {
@@ -66,7 +66,7 @@ EOF;
 <option value='-1year'>1year</option>
 </select> </form>
 EOE;
-        $ret = $this->page->get_time_select_box($times);
+        $ret = $this->page->getTimeSelectBox($times);
 
         $this->assertEquals($expected, $ret);
     }
@@ -86,7 +86,7 @@ EOE;
 <option value='-1year'>1year</option>
 </select> </form>
 EOE;
-        $ret = $this->page->get_time_select_box();
+        $ret = $this->page->getTimeSelectBox();
 
         $this->assertEquals($expected, $ret);
     }
@@ -157,12 +157,12 @@ EOE;
 EOD;
         $nav_items = ["bla" => "/bla"];
         $selectbox = "selectbox here";
-        $ret = $this->page->get_header("foo", $nav_items, $selectbox);
+        $ret = $this->page->getHeader("foo", $nav_items, $selectbox);
         $this->assertEquals($expected, $ret);
-        $this->page->set_select_box($selectbox);
-        $ret = $this->page->get_header("foo", $nav_items);
+        $this->page->setSelectBox($selectbox);
+        $ret = $this->page->getHeader("foo", $nav_items);
         $this->assertEquals($expected, $ret);
-        $ret = $this->page->get_header("foo", $nav_items);
+        $ret = $this->page->getHeader("foo", $nav_items);
         $this->assertEquals($expected, $ret);
     }
 
@@ -231,13 +231,13 @@ EOD;
   <div class="container">
 EOD;
         $nav_items = ["bla" => "/bla"];
-        $ret = $this->page->get_header("foo", $nav_items);
+        $ret = $this->page->getHeader("foo", $nav_items);
         $this->assertEquals($expected, $ret);
     }
 
     public function testBuildPageForMetrics() {
         $expct = '<div class="row"><div class="col-md-4"><img src="http://grpht.exmpl.com/render?width=400&from=-4hours&target=foo&hideLegend=true"></img></div><div class="col-md-4"><img src="http://grpht.exmpl.com/render?width=400&from=-4hours&target=bla&hideLegend=true"></img></div></div>';
-        $ret = $this->page->build_page_for_metrics(["foo", "bla"]);
+        $ret = $this->page->buildPageForMetrics(["foo", "bla"]);
         $this->assertEquals($expct, $ret);
     }
 
@@ -247,7 +247,7 @@ EOD;
         // buffer. However we still want to call the method as part of the
         // test suite.
         ob_start();
-        $this->page->render_full_page_with_metrics(["foo", "bla"]);
+        $this->page->renderFullPageWithMetrics(["foo", "bla"]);
         ob_end_clean();
     }
 

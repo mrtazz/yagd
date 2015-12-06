@@ -5,25 +5,25 @@ namespace Yagd;
 class Page {
 
     protected $config = [];
-    protected $default_times = [
+    protected $defaultTimes = [
         '1hour', '4hours', '12hours',
         '1day', '2days',
         '1week',
         '1month', '3months', '6months',
         '1year'
     ];
-    protected $default_time = "4hours";
-    protected $select_box = null;
+    protected $defaultTime = "4hours";
+    protected $selectBox = null;
 
     function __construct($config) {
         $this->config = $config;
         if (!isset($this->config["graphite"]["hidelegend"])) {
             $this->config["graphite"]["hidelegend"] = true;
         }
-        if (isset($_GET["from"])) {
-            $this->from = $_GET["from"];
-        } else {
-            $this->from = "-" . $this->default_time;
+        $this->requestURI = filter_input(INPUT_SERVER, 'REQUEST_URI');
+        $this->from = filter_input(INPUT_GET, 'from');
+        if (!isset($this->from)) {
+            $this->from = "-" . $this->defaultTime;
         }
     }
 
@@ -35,7 +35,7 @@ class Page {
      *
      * Returns the HTML for the graphs
      */
-    function build_page_for_metrics($metrics) {
+    function buildPageForMetrics($metrics) {
         $ret = '<div class="row">';
             foreach ( $metrics as $metric) {
 
@@ -57,10 +57,10 @@ class Page {
      * Parameters:
      *  $metrics - array of graphite metrics to render
      */
-    function render_full_page_with_metrics($metrics) {
-        print $this->get_header();
-        print $this->build_page_for_metrics($metrics);
-        print $this->get_footer();
+    function renderFullPageWithMetrics($metrics) {
+        print $this->getHeader();
+        print $this->buildPageForMetrics($metrics);
+        print $this->getFooter();
     }
 
     /**
@@ -72,10 +72,10 @@ class Page {
      *
      * Returns class='active' or the empty string
      */
-    function get_active_class_if_request_matches($requestUri)
+    function getActiveClassIfRequestMatches($requestUri)
     {
         $ret = "";
-        if ($_SERVER['REQUEST_URI'] == $requestUri) {
+        if ($this->requestURI === $requestUri) {
             $ret = "class='active'";
         }
 
@@ -90,18 +90,18 @@ class Page {
      *
      * Returns the HTML for the full select box as a string
      */
-    function get_time_select_box($times = null) {
+    function getTimeSelectBox($times = null) {
 
         if (is_null($times)) {
-            $times = $this->default_times;
+            $times = $this->defaultTimes;
         }
 
         $ret = "";
-        $ret .= "<form method='get' action='{$_SERVER['REQUEST_URI']}' ";
+        $ret .= "<form method='get' action='{$this->requestURI}' ";
         $ret .= "style='margin-top: 15px'class='pull-right'>";
         $ret .= "<select name='from' onchange='this.form.submit()'>" . PHP_EOL;
         foreach ($times as $timefrom) {
-            $current = $this->from ?: "-{$this->default_time}";
+            $current = $this->from ?: "-{$this->defaultTime}";
             $selected = ($current == "-${timefrom}") ? " selected" : "";
             $ret .= "<option ";
             $ret .= "value='-{$timefrom}'{$selected}>";
@@ -121,8 +121,19 @@ class Page {
      * Parameters
      *  $select_box - HTML for the select box
      */
-    function set_select_box($select_box) {
-        $this->select_box = $select_box;
+    function setSelectBox($selectBox) {
+        $this->selectBox = $selectBox;
+    }
+
+    /**
+     * Set the requestURI property. This is probably only useful for unit
+     * testing.
+     *
+     * Parameters
+     *  $requestUri - URI to set the requestURI to
+     */
+    function setRequestURI($requestURI) {
+        $this->requestURI = $requestURI;
     }
 
 
@@ -139,30 +150,29 @@ class Page {
      *
      *  Returns the header data as a string
      */
-    function get_header($title = null, $nav_items = [],
+    function getHeader($title = null, $navItems = [],
                         $selectbox = null, $times = null) {
 
         if (is_null($title)) {
             $title = $this->config["title"];
         }
-        $nav_bar = '<li' . $this->get_active_class_if_request_matches("/") .'>';
-        $nav_bar .= '<a href="/">Home</a></li>';
-        foreach ($nav_items as $name => $url) {
-            $nav_bar .= PHP_EOL;
-            $nav_bar .= "<li" . $this->get_active_class_if_request_matches($url) .">";
-            $nav_bar .= "<a href='{$url}'>{$name}</a></li>";
+        $navBar = '<li' . $this->getActiveClassIfRequestMatches("/") .'>';
+        $navBar .= '<a href="/">Home</a></li>';
+        foreach ($navItems as $name => $url) {
+            $navBar .= PHP_EOL;
+            $navBar .= "<li" . $this->getActiveClassIfRequestMatches($url) .">";
+            $navBar .= "<a href='{$url}'>{$name}</a></li>";
         }
+        $selectboxHtml = "<!-- select box would appear here -->";
         if (!is_null($selectbox)) {
-            $selectbox_html = "<div class='nav navbar-nav navbar-right'>";
-            $selectbox_html .= $selectbox . "</div>";
-        } elseif (!is_null($this->select_box)) {
-            $selectbox_html = "<div class='nav navbar-nav navbar-right'>";
-            $selectbox_html .= $this->select_box . "</div>";
-        } else {
-            $selectbox_html = "<!-- select box would appear here -->";
+            $selectboxHtml = "<div class='nav navbar-nav navbar-right'>";
+            $selectboxHtml .= $selectbox . "</div>";
+        } elseif (!is_null($this->selectBox)) {
+            $selectboxHtml = "<div class='nav navbar-nav navbar-right'>";
+            $selectboxHtml .= $this->selectBox . "</div>";
         }
 
-        $timeselect = $this->get_time_select_box($times);
+        $timeselect = $this->getTimeSelectBox($times);
 
         $header = <<<"EOD"
 <!DOCTYPE html>
@@ -204,12 +214,12 @@ class Page {
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            {$nav_bar}
+            {$navBar}
           </ul>
             <div class='nav navbar-nav navbar-left'>
             {$timeselect}
             </div>
-            {$selectbox_html}
+            {$selectboxHtml}
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -219,12 +229,12 @@ EOD;
     }
 
     /**
-     * get footer for page. This should always be called if get_header() has
+     * get footer for page. This should always be called if getHeader() has
      * been called before as they complement each other.
      *
      * Returns the footer as a string
      */
-    function get_footer() {
+    function getFooter() {
         $footer = <<<"EOF"
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
