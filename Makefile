@@ -1,11 +1,16 @@
 #
 
-.PHONY: test jekyll docs clean-docs deploy-docs
+.PHONY: test jekyll docs clean-docs deploy-docs composer phpmd
 
-test:
-	mkdir -p build/logs
+composer:
 	composer install
+
+test: composer
+	mkdir -p build/logs
 	./vendor/bin/phpunit -c tests/phpunit.xml
+
+phpmd: composer
+	./vendor/bin/phpmd phplib/ text cleancode,codesize,controversial,design,naming,unusedcode
 
 NAME=yagd
 VERSION = $(shell git describe --tags --always --dirty)
