@@ -2,7 +2,8 @@
 
 namespace Yagd;
 
-class Page {
+class Page
+{
 
     protected $config = [];
     protected $defaultTimes = [
@@ -15,7 +16,8 @@ class Page {
     protected $defaultTime = "4hours";
     protected $selectBox = null;
 
-    function __construct($config) {
+    function __construct($config)
+    {
         $this->config = $config;
         if (!isset($this->config["graphite"]["hidelegend"])) {
             $this->config["graphite"]["hidelegend"] = true;
@@ -35,18 +37,21 @@ class Page {
      *
      * Returns the HTML for the graphs
      */
-    function buildPageForMetrics($metrics) {
+    function buildPageForMetrics($metrics)
+    {
         $ret = '<div class="row">';
-            foreach ( $metrics as $metric) {
+        foreach ( $metrics as $metric) {
 
-                $graph = new GraphiteGraph($this->config['graphite']['host'],
-                    $this->from, null,
-                    $this->config['graphite']['hidelegend']);
+            $graph = new GraphiteGraph(
+                $this->config['graphite']['host'],
+                $this->from, null,
+                $this->config['graphite']['hidelegend']
+            );
 
-                $ret .= '<div class="col-md-4">';
-                $ret .= $graph->build_graph_img_tag($metric);
-                $ret .= '</div>';
-            }
+            $ret .= '<div class="col-md-4">';
+            $ret .= $graph->build_graph_img_tag($metric);
+            $ret .= '</div>';
+        }
         $ret .= '</div>';
         return $ret;
     }
@@ -57,7 +62,8 @@ class Page {
      * Parameters:
      *  $metrics - array of graphite metrics to render
      */
-    function renderFullPageWithMetrics($metrics) {
+    function renderFullPageWithMetrics($metrics)
+    {
         print $this->getHeader();
         print $this->buildPageForMetrics($metrics);
         print $this->getFooter();
@@ -90,7 +96,8 @@ class Page {
      *
      * Returns the HTML for the full select box as a string
      */
-    function getTimeSelectBox($times = null) {
+    function getTimeSelectBox($times = null)
+    {
 
         if (is_null($times)) {
             $times = $this->defaultTimes;
@@ -121,7 +128,8 @@ class Page {
      * Parameters
      *  $select_box - HTML for the select box
      */
-    function setSelectBox($selectBox) {
+    function setSelectBox($selectBox)
+    {
         $this->selectBox = $selectBox;
     }
 
@@ -132,7 +140,8 @@ class Page {
      * Parameters
      *  $requestUri - URI to set the requestURI to
      */
-    function setRequestURI($requestURI) {
+    function setRequestURI($requestURI)
+    {
         $this->requestURI = $requestURI;
     }
 
@@ -151,7 +160,8 @@ class Page {
      *  Returns the header data as a string
      */
     function getHeader($title = null, $navItems = [],
-                        $selectbox = null, $times = null) {
+        $selectbox = null, $times = null
+    ) {
 
         if (is_null($title)) {
             $title = $this->config["title"];
@@ -234,7 +244,8 @@ EOD;
      *
      * Returns the footer as a string
      */
-    function getFooter() {
+    function getFooter()
+    {
         $footer = <<<"EOF"
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
