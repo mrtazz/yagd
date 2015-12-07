@@ -2,6 +2,8 @@
 
 .PHONY: test jekyll docs clean-docs deploy-docs composer phpmd coverage-html codesniffer
 
+SNIFFS=$(shell awk -vORS=, '{ print $0 }' tests/sniffs.csv | sed 's/,$$/\n/')
+
 composer:
 	composer install
 
@@ -17,7 +19,7 @@ phpmd: composer
 	./vendor/bin/phpmd phplib/ text cleancode,codesize,controversial,design,naming,unusedcode
 
 codesniffer: composer
-	./vendor/bin/phpcs phplib
+	./vendor/bin/phpcs --standard="PSR1,PSR2" --sniffs=$(SNIFFS) phplib
 
 NAME=yagd
 VERSION = $(shell git describe --tags --always --dirty)
