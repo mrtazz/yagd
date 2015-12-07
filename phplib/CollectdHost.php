@@ -2,21 +2,24 @@
 
 namespace Yagd;
 
-require_once("GraphiteGraph.php");
-
 class CollectdHost {
 
     protected $additional_metrics;
 
-    function __construct($hostname, $cpus = 0, $fss = [], $apache = false,
-                         $interfaces = []) {
-        $this->hostname = $hostname;
-        $this->san_name = str_replace('.', '_', $hostname);
-        $this->cpus = $cpus;
-        $this->fss = $fss;
-        $this->apache = $apache;
-        $this->interfaces = $interfaces;
-        $this->additional_metrics = [];
+    function __construct(
+        $hostname,
+        $cpus = 0,
+        $fss = [],
+        $apache = false,
+        $interfaces = []
+    ) {
+                             $this->hostname = $hostname;
+                             $this->san_name = str_replace('.', '_', $hostname);
+                             $this->cpus = $cpus;
+                             $this->fss = $fss;
+                             $this->apache = $apache;
+                             $this->interfaces = $interfaces;
+                             $this->additional_metrics = [];
     }
 
     /**
@@ -24,7 +27,8 @@ class CollectdHost {
      *
      * Returns additional metrics
      */
-    function get_additional_metrics() {
+    function get_additional_metrics()
+    {
         return $this->additional_metrics;
     }
 
@@ -34,7 +38,8 @@ class CollectdHost {
      * Parameter
      *  $metrics - metrics to set to
      */
-    function set_additional_metrics($metrics) {
+    function set_additional_metrics($metrics)
+    {
         $this->additional_metrics = $metrics;
     }
 
@@ -44,14 +49,16 @@ class CollectdHost {
      * Parameter
      *  $metric - metric to append
      */
-    function append_additional_metric($metric) {
+    function append_additional_metric($metric)
+    {
         $this->additional_metrics[] = $metric;
     }
 
     /**
      * Helper function to fully render a CollectdHost with all properties
      */
-    function render() {
+    function render()
+    {
         $this->render_cpus();
         $this->render_memory();
         $this->render_interfaces();
@@ -72,7 +79,8 @@ class CollectdHost {
      *  $host - hostname of the graphite host with protocol
      *  $legend - value to use for the Graphite hideLegend
      */
-    function set_graphite_configuration($host, $legend = null) {
+    function set_graphite_configuration($host, $legend = null)
+    {
         $this->graphite_host = $host;
         $this->graphite_legend = $legend;
     }
@@ -83,9 +91,14 @@ class CollectdHost {
      *
      * Returns a GraphiteGraph instance
      */
-    function get_graph() {
-        return new GraphiteGraph($this->graphite_host, $_GET["from"],
-                                 null, $this->graphite_legend);
+    function get_graph()
+    {
+        return new GraphiteGraph(
+            $this->graphite_host,
+            $_GET["from"],
+            null,
+            $this->graphite_legend
+        );
     }
 
     /**
@@ -93,7 +106,8 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_cpus_html() {
+    function build_cpus_html()
+    {
         $ret = "";
         if ($this->cpus === 0) {
             return $ret;
@@ -118,7 +132,8 @@ class CollectdHost {
     /**
      * Helper method to render CPU dashboard code
      */
-    function render_cpus() {
+    function render_cpus()
+    {
         print $this->build_cpus_html();
     }
 
@@ -127,7 +142,8 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_memory_html() {
+    function build_memory_html()
+    {
         $ret = '';
         $graph = $this->get_graph();
         $graph->stacked(true);
@@ -145,7 +161,8 @@ class CollectdHost {
     /**
      * Helper method to render Memory dashboard code
      */
-    function render_memory() {
+    function render_memory()
+    {
         print $this->build_memory_html();
     }
 
@@ -156,9 +173,10 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_additional_metrics_html() {
+    function build_additional_metrics_html()
+    {
         $ret = "";
-        foreach($this->additional_metrics as $name=>$metrics) {
+        foreach ($this->additional_metrics as $name=>$metrics) {
             $ret .= "<h2> {$name} </h2>";
             $ret .= '<div class="row">';
             foreach ($metrics as $title=>$metric) {
@@ -179,7 +197,8 @@ class CollectdHost {
      * prints the return value. All the logic happens in there.
      *
      */
-    function render_additional_metrics() {
+    function render_additional_metrics()
+    {
         print $this->build_additional_metrics_html();
     }
 
@@ -193,7 +212,8 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_uptime_html($as_days=false, $raw_data = null) {
+    function build_uptime_html($as_days = false, $raw_data = null)
+    {
         $graph = $this->get_graph();
         $metric = "collectd." . $this->san_name . ".uptime.uptime";
 
@@ -218,7 +238,8 @@ class CollectdHost {
     /**
      * Helper method to render uptime dashboard code
      */
-    function render_uptime($as_days=false) {
+    function render_uptime($as_days = false)
+    {
         print $this->build_uptime_html($as_days);
     }
 
@@ -227,7 +248,8 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_filesystems_html() {
+    function build_filesystems_html()
+    {
         $ret = '';
         $graph = $this->get_graph();
         $ret .= '<h2> Filesystems </h2>';
@@ -249,7 +271,8 @@ class CollectdHost {
     /**
      * Helper method to render filesystem dashboard code
      */
-    function render_filesystems() {
+    function render_filesystems()
+    {
         print $this->build_filesystems_html();
     }
 
@@ -258,7 +281,8 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_apache_html() {
+    function build_apache_html()
+    {
         $ret = '';
         $properties = array(
             'apache_bytes',
@@ -290,7 +314,8 @@ class CollectdHost {
     /**
      * Helper method to render apache dashboard code
      */
-    function render_apache() {
+    function render_apache()
+    {
         print $this->build_apache_html();
     }
 
@@ -299,7 +324,8 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_interfaces_html() {
+    function build_interfaces_html()
+    {
         $ret = '';
         $metric_types = [ "packets", "octets", "errors" ];
         $ret .= '<h2> Network </h2>';
@@ -325,7 +351,8 @@ class CollectdHost {
     /**
      * Helper method to render interfaces dashboard code
      */
-    function render_interfaces() {
+    function render_interfaces()
+    {
         print $this->build_interfaces_html();
     }
 
