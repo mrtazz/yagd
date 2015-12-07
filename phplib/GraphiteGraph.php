@@ -121,8 +121,10 @@ class GraphiteGraph
     {
         $url = $this->getGraphiteUrlForMetric($target);
         if (is_null($rawData)) {
+            // @codeCoverageIgnoreStart
             $rawData = file_get_contents("{$url}&format=raw");
         }
+        // @codeCoverageIgnoreEnd
         $val = explode(",", $rawData);
         $val = array_filter(
             $val,
