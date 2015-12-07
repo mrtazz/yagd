@@ -40,11 +40,12 @@ class Page
     function buildPageForMetrics($metrics)
     {
         $ret = '<div class="row">';
-        foreach ( $metrics as $metric) {
+        foreach ($metrics as $metric) {
 
             $graph = new GraphiteGraph(
                 $this->config['graphite']['host'],
-                $this->from, null,
+                $this->from,
+                null,
                 $this->config['graphite']['hidelegend']
             );
 
@@ -159,8 +160,11 @@ class Page
      *
      *  Returns the header data as a string
      */
-    function getHeader($title = null, $navItems = [],
-        $selectbox = null, $times = null
+    function getHeader(
+        $title = null,
+        $navItems = [],
+        $selectbox = null,
+        $times = null
     ) {
 
         if (is_null($title)) {
