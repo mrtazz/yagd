@@ -2,7 +2,8 @@
 
 namespace Yagd;
 
-class CollectdHost extends Host {
+class CollectdHost extends Host
+{
 
     protected $additionalMetrics;
     protected $apache = false;
@@ -12,7 +13,7 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildCPUsHtml()
+    public function buildCPUsHtml()
     {
         $ret = "";
         if ($this->cpus === 0) {
@@ -23,12 +24,10 @@ class CollectdHost extends Host {
         $ret .= '<h2> CPU Info </h2>';
         $ret .= '<div class="row">';
         for ($i = 0; $i < $this->cpus; $i++) {
-
             $metric = "collectd." . $this->sanName . ".cpu-$i.cpu-*";
             $ret .= '<div class="col-md-4">';
             $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
-
         }
         $ret .= "</div>";
 
@@ -40,7 +39,7 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildMemoryHtml()
+    public function buildMemoryHtml()
     {
         $ret = '';
         $graph = $this->getGraph();
@@ -63,13 +62,13 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildAdditionalMetricsHtml()
+    public function buildAdditionalMetricsHtml()
     {
         $ret = "";
-        foreach ($this->getAdditionalMetrics() as $name=>$metrics) {
+        foreach ($this->getAdditionalMetrics() as $name => $metrics) {
             $ret .= "<h2> {$name} </h2>";
             $ret .= '<div class="row">';
-            foreach ($metrics as $title=>$metric) {
+            foreach ($metrics as $title => $metric) {
                 $graph = $this->getGraph();
                 $graph->setTitle($title);
                 $ret .= '<div class="col-md-4">';
@@ -87,7 +86,7 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildUptimeHtml()
+    public function buildUptimeHtml()
     {
         $graph = $this->getGraph();
         $metric = "collectd." . $this->sanName . ".uptime.uptime";
@@ -111,7 +110,7 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildUptimeAsDaysHtml($rawData = null)
+    public function buildUptimeAsDaysHtml($rawData = null)
     {
         $graph = $this->getGraph();
         $metric = "collectd." . $this->sanName . ".uptime.uptime";
@@ -128,7 +127,7 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildFilesystemsHtml()
+    public function buildFilesystemsHtml()
     {
         $ret = '';
         $graph = $this->getGraph();
@@ -153,7 +152,7 @@ class CollectdHost extends Host {
      *
      * Returns HTML as string
      */
-    function buildInterfacesHtml()
+    public function buildInterfacesHtml()
     {
         $ret = '';
         $metricTypes = [ "packets", "octets", "errors" ];
