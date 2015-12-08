@@ -4,7 +4,7 @@ namespace Yagd;
 
 class CollectdHost {
 
-    protected $additional_metrics;
+    protected $additionalMetrics;
 
     function __construct(
         $hostname,
@@ -14,12 +14,12 @@ class CollectdHost {
         $interfaces = []
     ) {
                              $this->hostname = $hostname;
-                             $this->san_name = str_replace('.', '_', $hostname);
+                             $this->sanName = str_replace('.', '_', $hostname);
                              $this->cpus = $cpus;
                              $this->fss = $fss;
                              $this->apache = $apache;
                              $this->interfaces = $interfaces;
-                             $this->additional_metrics = [];
+                             $this->additionalMetrics = [];
     }
 
     /**
@@ -27,9 +27,9 @@ class CollectdHost {
      *
      * Returns additional metrics
      */
-    function get_additional_metrics()
+    function getAdditionalMetrics()
     {
-        return $this->additional_metrics;
+        return $this->additionalMetrics;
     }
 
     /**
@@ -38,9 +38,9 @@ class CollectdHost {
      * Parameter
      *  $metrics - metrics to set to
      */
-    function set_additional_metrics($metrics)
+    function setAdditionalMetrics($metrics)
     {
-        $this->additional_metrics = $metrics;
+        $this->additionalMetrics = $metrics;
     }
 
     /**
@@ -49,9 +49,9 @@ class CollectdHost {
      * Parameter
      *  $metric - metric to append
      */
-    function append_additional_metric($metric)
+    function appendAdditionalMetric($metric)
     {
-        $this->additional_metrics[] = $metric;
+        $this->additionalMetrics[] = $metric;
     }
 
     /**
@@ -59,17 +59,17 @@ class CollectdHost {
      */
     function render()
     {
-        $this->render_cpus();
-        $this->render_memory();
-        $this->render_interfaces();
+        $this->renderCPUs();
+        $this->renderMemory();
+        $this->renderInterfaces();
         if (count($this->fss) > 0) {
-            $this->render_filesystems();
+            $this->renderFilesystems();
         }
         if ($this->apache) {
-            $this->render_apache();
+            $this->renderApache();
         }
-        $this->render_uptime();
-        $this->render_additional_metrics();
+        $this->renderUptime();
+        $this->renderAdditionalMetrics();
     }
 
     /**
@@ -79,10 +79,10 @@ class CollectdHost {
      *  $host - hostname of the graphite host with protocol
      *  $legend - value to use for the Graphite hideLegend
      */
-    function set_graphite_configuration($host, $legend = null)
+    function setGraphiteConfiguration($host, $legend = null)
     {
-        $this->graphite_host = $host;
-        $this->graphite_legend = $legend;
+        $this->graphiteHost = $host;
+        $this->graphiteLegend = $legend;
     }
 
     /**
@@ -91,13 +91,13 @@ class CollectdHost {
      *
      * Returns a GraphiteGraph instance
      */
-    function get_graph()
+    function getGraph()
     {
         return new GraphiteGraph(
-            $this->graphite_host,
-            $_GET["from"],
+            $this->graphiteHost,
             null,
-            $this->graphite_legend
+            null,
+            $this->graphiteLegend
         );
     }
 
@@ -106,19 +106,19 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_cpus_html()
+    function buildCPUsHtml()
     {
         $ret = "";
         if ($this->cpus === 0) {
             return $ret;
         }
-        $graph = $this->get_graph();
+        $graph = $this->getGraph();
         $graph->stacked(true);
         $ret .= '<h2> CPU Info </h2>';
         $ret .= '<div class="row">';
         for ($i = 0; $i < $this->cpus; $i++) {
 
-            $metric = "collectd." . $this->san_name . ".cpu-$i.cpu-*";
+            $metric = "collectd." . $this->sanName . ".cpu-$i.cpu-*";
             $ret .= '<div class="col-md-4">';
             $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
@@ -132,9 +132,9 @@ class CollectdHost {
     /**
      * Helper method to render CPU dashboard code
      */
-    function render_cpus()
+    function renderCPUs()
     {
-        print $this->build_cpus_html();
+        print $this->buildCPUsHtml();
     }
 
     /**
@@ -142,12 +142,12 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_memory_html()
+    function buildMemoryHtml()
     {
         $ret = '';
-        $graph = $this->get_graph();
+        $graph = $this->getGraph();
         $graph->stacked(true);
-        $metric = "collectd." . $this->san_name . ".memory.memory-*";
+        $metric = "collectd." . $this->sanName . ".memory.memory-*";
         $ret .= '<h2> Memory Info </h2>';
         $ret .= '<div class="row">';
         $ret .= '<div class="col-md-4">';
@@ -161,9 +161,9 @@ class CollectdHost {
     /**
      * Helper method to render Memory dashboard code
      */
-    function render_memory()
+    function renderMemory()
     {
-        print $this->build_memory_html();
+        print $this->buildMemoryHtml();
     }
 
     /**
@@ -173,14 +173,14 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_additional_metrics_html()
+    function buildAdditionalMetricsHtml()
     {
         $ret = "";
-        foreach ($this->additional_metrics as $name=>$metrics) {
+        foreach ($this->getAdditionalMetrics() as $name=>$metrics) {
             $ret .= "<h2> {$name} </h2>";
             $ret .= '<div class="row">';
             foreach ($metrics as $title=>$metric) {
-                $graph = $this->get_graph();
+                $graph = $this->getGraph();
                 $graph->setTitle($title);
                 $ret .= '<div class="col-md-4">';
                 $ret .= $graph->buildGraphImgTag($metric);
@@ -193,33 +193,33 @@ class CollectdHost {
     }
     /**
      * Render additional metrics. This builds upon
-     * build_additional_metrics_html() and just passes arguments to it and
+     * buildAdditionalMetricsHtml() and just passes arguments to it and
      * prints the return value. All the logic happens in there.
      *
      */
-    function render_additional_metrics()
+    function renderAdditionalMetrics()
     {
-        print $this->build_additional_metrics_html();
+        print $this->buildAdditionalMetricsHtml();
     }
 
     /**
      * Build dashboard HTML for uptime graphs
      *
      * Parameters
-     *  $as_days - boolean to determine whether to show the graphs or uptime
+     *  $asDays - boolean to determine whether to show the graphs or uptime
      *  in days
-     *  $raw_data - mock uptime raw graphite data for testing
+     *  $rawData - mock uptime raw graphite data for testing
      *
      * Returns HTML as string
      */
-    function build_uptime_html($as_days = false, $raw_data = null)
+    function buildUptimeHtml($asDays = false, $rawData = null)
     {
-        $graph = $this->get_graph();
-        $metric = "collectd." . $this->san_name . ".uptime.uptime";
+        $graph = $this->getGraph();
+        $metric = "collectd." . $this->sanName . ".uptime.uptime";
 
         $ret = '';
-        if ($as_days === true) {
-            $val = $graph->getLastValue($metric, $raw_data);
+        if ($asDays === true) {
+            $val = $graph->getLastValue($metric, $rawData);
             $days = intval($val / 86400);
             $ret = "{$days} days";
         } else {
@@ -238,9 +238,9 @@ class CollectdHost {
     /**
      * Helper method to render uptime dashboard code
      */
-    function render_uptime($as_days = false)
+    function renderUptime($asDays = false)
     {
-        print $this->build_uptime_html($as_days);
+        print $this->buildUptimeHtml($asDays);
     }
 
     /**
@@ -248,16 +248,16 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_filesystems_html()
+    function buildFilesystemsHtml()
     {
         $ret = '';
-        $graph = $this->get_graph();
+        $graph = $this->getGraph();
         $ret .= '<h2> Filesystems </h2>';
         $ret .= '<div class="row">';
         foreach ($this->fss as $fs) {
             $graph->setTitle($fs);
             $graph->stacked(true);
-            $metric = "aliasSub(collectd.{$this->san_name}.df-${fs}.*,'collectd.{$this->san_name}.df-${fs}.*df_','')";
+            $metric = "aliasSub(collectd.{$this->sanName}.df-${fs}.*,'collectd.{$this->sanName}.df-${fs}.*df_','')";
             $ret .= '<div class="col-md-4">';
             $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
@@ -271,9 +271,9 @@ class CollectdHost {
     /**
      * Helper method to render filesystem dashboard code
      */
-    function render_filesystems()
+    function renderFilesystems()
     {
-        print $this->build_filesystems_html();
+        print $this->buildFilesystemsHtml();
     }
 
     /**
@@ -281,7 +281,7 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_apache_html()
+    function buildApacheHtml()
     {
         $ret = '';
         $properties = array(
@@ -290,11 +290,11 @@ class CollectdHost {
             'apache_idle_workers',
             'apache_requests',
         );
-        $graph = $this->get_graph();
+        $graph = $this->getGraph();
         $ret .= '<h2> Apache Info </h2>';
         $ret .= '<div class="row">';
         foreach ($properties as $property) {
-            $metric = "collectd." . $this->san_name . ".apache-apache80.$property";
+            $metric = "collectd." . $this->sanName . ".apache-apache80.$property";
             $ret .= '<div class="col-md-4">';
             $ret .= $graph->buildGraphImgTag($metric);
             $ret .= '</div>';
@@ -302,7 +302,7 @@ class CollectdHost {
         $ret .= "</div>";
         $ret .= '<div class="row">';
         $graph->stacked(true);
-        $metric = "collectd." . $this->san_name . ".apache-apache80.apache_scoreboard-*";
+        $metric = "collectd." . $this->sanName . ".apache-apache80.apache_scoreboard-*";
         $ret .= '<div class="col-md-4">';
         $ret .= $graph->buildGraphImgTag($metric);
         $ret .= '</div>';
@@ -314,9 +314,9 @@ class CollectdHost {
     /**
      * Helper method to render apache dashboard code
      */
-    function render_apache()
+    function renderApache()
     {
-        print $this->build_apache_html();
+        print $this->buildApacheHtml();
     }
 
     /**
@@ -324,19 +324,19 @@ class CollectdHost {
      *
      * Returns HTML as string
      */
-    function build_interfaces_html()
+    function buildInterfacesHtml()
     {
         $ret = '';
-        $metric_types = [ "packets", "octets", "errors" ];
+        $metricTypes = [ "packets", "octets", "errors" ];
         $ret .= '<h2> Network </h2>';
         $ret .= '<div class="row">';
         foreach ($this->interfaces as $int) {
-            foreach ($metric_types as $type) {
-                $graph = $this->get_graph();
+            foreach ($metricTypes as $type) {
+                $graph = $this->getGraph();
                 $graph->setTitle("{$int} {$type}/s");
-                $metric  = "aliasSub(collectd.{$this->san_name}.";
+                $metric  = "aliasSub(collectd.{$this->sanName}.";
                 $metric .= "interface-${int}.if_{$type}.*,";
-                $metric .= "'collectd.{$this->san_name}.interface-${int}.if_{$type}.','')";
+                $metric .= "'collectd.{$this->sanName}.interface-${int}.if_{$type}.','')";
                 $ret .= '<div class="col-md-4">';
                 $ret .= $graph->buildGraphImgTag($metric);
                 $ret .= '</div>';
@@ -351,9 +351,9 @@ class CollectdHost {
     /**
      * Helper method to render interfaces dashboard code
      */
-    function render_interfaces()
+    function renderInterfaces()
     {
-        print $this->build_interfaces_html();
+        print $this->buildInterfacesHtml();
     }
 
 }
