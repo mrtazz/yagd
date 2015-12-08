@@ -175,5 +175,4 @@ class CollectdHost extends Host
 
         return $ret;
     }
-
 }

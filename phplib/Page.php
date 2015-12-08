@@ -16,7 +16,7 @@ class Page
     protected $defaultTime = "4hours";
     protected $selectBox = null;
 
-    function __construct($config)
+    public function __construct($config)
     {
         $this->config = $config;
         if (!isset($this->config["graphite"]["hidelegend"])) {
@@ -37,11 +37,10 @@ class Page
      *
      * Returns the HTML for the graphs
      */
-    function buildPageForMetrics($metrics)
+    public function buildPageForMetrics($metrics)
     {
         $ret = '<div class="row">';
         foreach ($metrics as $metric) {
-
             $graph = new GraphiteGraph(
                 $this->config['graphite']['host'],
                 $this->from,
@@ -63,7 +62,7 @@ class Page
      * Parameters:
      *  $metrics - array of graphite metrics to render
      */
-    function renderFullPageWithMetrics($metrics)
+    public function renderFullPageWithMetrics($metrics)
     {
         print $this->getHeader();
         print $this->buildPageForMetrics($metrics);
@@ -79,7 +78,7 @@ class Page
      *
      * Returns class='active' or the empty string
      */
-    function getActiveClassIfRequestMatches($requestUri)
+    public function getActiveClassIfRequestMatches($requestUri)
     {
         $ret = "";
         if ($this->requestURI === $requestUri) {
@@ -97,7 +96,7 @@ class Page
      *
      * Returns the HTML for the full select box as a string
      */
-    function getTimeSelectBox($times = null)
+    public function getTimeSelectBox($times = null)
     {
 
         if (is_null($times)) {
@@ -129,7 +128,7 @@ class Page
      * Parameters
      *  $select_box - HTML for the select box
      */
-    function setSelectBox($selectBox)
+    public function setSelectBox($selectBox)
     {
         $this->selectBox = $selectBox;
     }
@@ -141,7 +140,7 @@ class Page
      * Parameters
      *  $requestUri - URI to set the requestURI to
      */
-    function setRequestURI($requestURI)
+    public function setRequestURI($requestURI)
     {
         $this->requestURI = $requestURI;
     }
@@ -160,7 +159,7 @@ class Page
      *
      *  Returns the header data as a string
      */
-    function getHeader(
+    public function getHeader(
         $title = null,
         $navItems = [],
         $selectbox = null,
@@ -248,7 +247,7 @@ EOD;
      *
      * Returns the footer as a string
      */
-    function getFooter()
+    public function getFooter()
     {
         $footer = <<<"EOF"
     </div>

@@ -7,7 +7,7 @@ class GraphiteGraph
 
     private $stacked = false;
 
-    function __construct(
+    public function __construct(
         $graphitehost,
         $from = null,
         $title = null,
@@ -28,7 +28,7 @@ class GraphiteGraph
      * Parameter
      *  $title - title of the graph
      */
-    function setTitle($title = "")
+    public function setTitle($title = "")
     {
         $this->title = $title;
     }
@@ -39,7 +39,7 @@ class GraphiteGraph
      * Parameter
      *  $val - true or false
      */
-    function stacked($val)
+    public function stacked($val)
     {
         $this->stacked = $val;
     }
@@ -53,7 +53,7 @@ class GraphiteGraph
      * Parameter
      *  $val - true, false or null
      */
-    function setLegend($val)
+    public function setLegend($val)
     {
         $this->legend = "&hideLegend=false";
         if (is_null($val)) {
@@ -69,7 +69,7 @@ class GraphiteGraph
      * Parameter
      *  $target - Graphite metric to render
      */
-    function render($target)
+    public function render($target)
     {
         print($this->buildGraphImgTag($target));
     }
@@ -82,7 +82,7 @@ class GraphiteGraph
      *
      * Returns the full URL as a string
      */
-    function getGraphiteUrlForMetric($metric)
+    public function getGraphiteUrlForMetric($metric)
     {
         return str_replace("{{THETARGET}}", $metric, $this->baseurl);
     }
@@ -95,7 +95,7 @@ class GraphiteGraph
      *
      * Returns the graph img tag as a string
      */
-    function buildGraphImgTag($target)
+    public function buildGraphImgTag($target)
     {
         $url = $this->getGraphiteUrlForMetric($target);
         if (!empty($this->title)) {
@@ -117,7 +117,7 @@ class GraphiteGraph
      *
      * Returns the last value of the timeseries as a number
      */
-    function getLastValue($target, $rawData = null)
+    public function getLastValue($target, $rawData = null)
     {
         $url = $this->getGraphiteUrlForMetric($target);
         if (is_null($rawData)) {
@@ -134,5 +134,4 @@ class GraphiteGraph
         );
         return end($val);
     }
-
 }

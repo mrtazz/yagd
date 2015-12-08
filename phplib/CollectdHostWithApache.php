@@ -2,7 +2,8 @@
 
 namespace Yagd;
 
-class CollectdHostWithApache extends CollectdHost {
+class CollectdHostWithApache extends CollectdHost
+{
 
     protected $apache = true;
 
@@ -11,7 +12,7 @@ class CollectdHostWithApache extends CollectdHost {
      *
      * Returns HTML as string
      */
-    function buildApacheHtml()
+    public function buildApacheHtml()
     {
         $ret = '';
         $properties = array(
@@ -40,5 +41,4 @@ class CollectdHostWithApache extends CollectdHost {
 
         return $ret;
     }
-
 }

@@ -7,7 +7,7 @@ abstract class Host
 
     protected $additionalMetrics;
 
-    function __construct(
+    public function __construct(
         $hostname,
         $cpus = 0,
         $fss = [],
@@ -26,7 +26,7 @@ abstract class Host
      *
      * Returns additional metrics
      */
-    function getAdditionalMetrics()
+    public function getAdditionalMetrics()
     {
         return $this->additionalMetrics;
     }
@@ -37,7 +37,7 @@ abstract class Host
      * Parameter
      *  $metrics - metrics to set to
      */
-    function setAdditionalMetrics($metrics)
+    public function setAdditionalMetrics($metrics)
     {
         $this->additionalMetrics = $metrics;
     }
@@ -48,7 +48,7 @@ abstract class Host
      * Parameter
      *  $metric - metric to append
      */
-    function appendAdditionalMetric($metric)
+    public function appendAdditionalMetric($metric)
     {
         $this->additionalMetrics[] = $metric;
     }
@@ -78,7 +78,7 @@ abstract class Host
     /**
      * Helper function to fully render a CollectdHost with all properties
      */
-    function render()
+    public function render()
     {
         $this->renderCPUs();
         $this->renderMemory();
@@ -100,7 +100,7 @@ abstract class Host
      *  $host - hostname of the graphite host with protocol
      *  $legend - value to use for the Graphite hideLegend
      */
-    function setGraphiteConfiguration($host, $legend = null)
+    public function setGraphiteConfiguration($host, $legend = null)
     {
         $this->graphiteHost = $host;
         $this->graphiteLegend = $legend;
@@ -112,7 +112,7 @@ abstract class Host
      *
      * Returns a GraphiteGraph instance
      */
-    function getGraph()
+    public function getGraph()
     {
         return new GraphiteGraph(
             $this->graphiteHost,
@@ -121,5 +121,4 @@ abstract class Host
             $this->graphiteLegend
         );
     }
-
 }
