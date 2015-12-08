@@ -1,13 +1,13 @@
 <?php
-require_once("phplib/CollectdHost.php");
 
 use Yagd\CollectdHost;
+use Yagd\CollectdHostWithApache;
 
 class CollectdHostTest extends PHPUnit_Framework_TestCase
 {
     public function setUp() {
         $_GET["from"] = "-4h";
-        $this->host = new CollectdHost("foo", 2, ['/var'], true, ['re0']);
+        $this->host = new CollectdHost("foo", 2, ['/var'], ['re0']);
         $this->host->setGraphiteConfiguration("http://grph.xmpl.com");
     }
 
@@ -57,6 +57,8 @@ class CollectdHostTest extends PHPUnit_Framework_TestCase
     }
 
     public function testApacheHTML() {
+        $this->host = new CollectdHostWithApache("foo", 2, ['/var'], ['re0']);
+        $this->host->setGraphiteConfiguration("http://grph.xmpl.com");
         $ret = $this->host->buildApacheHtml();
         $expct = '<h2> Apache Info </h2><div class="row"><div class="col-md-4"><img src="http://grph.xmpl.com/render?width=400&from=-4h&target=collectd.foo.apache-apache80.apache_bytes"></img></div><div class="col-md-4"><img src="http://grph.xmpl.com/render?width=400&from=-4h&target=collectd.foo.apache-apache80.apache_connections"></img></div><div class="col-md-4"><img src="http://grph.xmpl.com/render?width=400&from=-4h&target=collectd.foo.apache-apache80.apache_idle_workers"></img></div><div class="col-md-4"><img src="http://grph.xmpl.com/render?width=400&from=-4h&target=collectd.foo.apache-apache80.apache_requests"></img></div></div><div class="row"><div class="col-md-4"><img src="http://grph.xmpl.com/render?width=400&from=-4h&target=collectd.foo.apache-apache80.apache_scoreboard-*&areaMode=stacked"></img></div></div>';
         $this->assertEquals($expct, $ret);
@@ -72,7 +74,7 @@ class CollectdHostTest extends PHPUnit_Framework_TestCase
         $ret = $this->host->buildUptimeHtml();
         $expct = '<h2> uptime </h2><div class="row"><div class="col-md-4"><img src="http://grph.xmpl.com/render?width=400&from=-4h&target=collectd.foo.uptime.uptime"></img></div></div>';
         $this->assertEquals($expct, $ret);
-        $ret = $this->host->buildUptimeHtml(true, 86400);
+        $ret = $this->host->buildUptimeAsDaysHtml(86400);
         $expct = '1 days';
         $this->assertEquals($expct, $ret);
     }
@@ -85,6 +87,16 @@ class CollectdHostTest extends PHPUnit_Framework_TestCase
     public function testRender() {
         // we only execute the render method here to make sure it runs. The
         // output is already tested via all the specific builder methods
+        ob_start();
+        $this->host->render();
+        ob_end_clean();
+    }
+
+    public function testRenderWithApache() {
+        // we only execute the render method here to make sure it runs. The
+        // output is already tested via all the specific builder methods
+        $this->host = new CollectdHostWithApache("foo", 2, ['/var'], ['re0']);
+        $this->host->setGraphiteConfiguration("http://grph.xmpl.com");
         ob_start();
         $this->host->render();
         ob_end_clean();
