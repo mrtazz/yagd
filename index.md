@@ -20,7 +20,7 @@ advanced features I'd recommend checking that out.
 ![yagd look](http://s3itch.unwiredcouch.com/Dashboards-20151108-214111.jpg)
 
 ## Requirements
-- PHP >= 5.4
+- PHP >= 5.5
 - Graphite
 
 ## Installation
@@ -62,7 +62,6 @@ Configure hosts in your `config.php`
 $CONFIG['hosts'] = [
         "foo.example.com" => [
             "cpus" => 2,
-            "apache" => true,
             "filesystems" => [ 'root', 'var', ]
             ],
             "additional_metrics" => [
@@ -88,21 +87,21 @@ use Yagd\CollectdHost;
 use Yagd\Page;
 
 $page = new Page($CONFIG);
-echo $page->get_header($CONFIG["title"],
+echo $page->getHeader($CONFIG["title"],
     $CONFIG["navitems"]);
 
 foreach($CONFIG["hosts"] as $host => $data) {
 
     $fss = empty($data["filesystems"]) ? [] : $data["filesystems"];
 
-    $server = new CollectdHost($host, $data["cpus"], $fss, ($data["apache"] == true),
+    $server = new CollectdHost($host, $data["cpus"], $fss,
                                $data["interfaces"]);
-    $server->set_graphite_configuration($CONFIG["graphite"]["host"]);
+    $server->setGraphiteConfiguration($CONFIG["graphite"]["host"]);
     echo "<h2> {$host} </h2>";
     $server->render();
 }
 
-echo $page->get_footer();
+echo $page->getFooter();
 
 ```
 
@@ -125,7 +124,7 @@ $selectbox .= "</select>";
 $selectbox .= "</form>";
 
 $page = new Page($CONFIG);
-echo $page->get_header($CONFIG["title"],
+echo $page->getHeader($CONFIG["title"],
     $CONFIG["navitems"],
     $selectbox);
 
