@@ -41,7 +41,7 @@ EOF;
 
     public function testGetActiveClassIfRequestMatches() {
 
-        $this->assertEquals("class='active'", $this->page->getActiveClassIfRequestMatches("/foo"));
+        $this->assertEquals(" class='active'", $this->page->getActiveClassIfRequestMatches("/foo"));
     }
 
     public function testGetTimeSelectBox() {

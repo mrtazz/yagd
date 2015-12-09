@@ -82,7 +82,7 @@ class Page
     {
         $ret = "";
         if ($this->requestURI === $requestUri) {
-            $ret = "class='active'";
+            $ret = " class='active'";
         }
 
         return $ret;
