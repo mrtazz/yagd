@@ -72,7 +72,7 @@ abstract class Host
             $msg = "HTML builder method '{$builderMethod}' not implemented.";
             throw new \Exception($msg);
         }
-        print $this->$builderMethod($arguments);
+        print $this->$builderMethod();
     }
 
     /**
