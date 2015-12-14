@@ -49,7 +49,7 @@ $metrics = array(
 );
 
 $page = new Page($CONFIG);
-$page->render_full_page_with_metrics($metrics);
+$page->renderFullPageWithMetrics($metrics);
 ```
 
 ### Display CollectD host data
