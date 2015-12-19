@@ -162,8 +162,6 @@ EOD;
         $this->page->setSelectBox($selectbox);
         $ret = $this->page->getHeader("foo", $nav_items);
         $this->assertEquals($expected, $ret);
-        $ret = $this->page->getHeader("foo", $nav_items);
-        $this->assertEquals($expected, $ret);
     }
 
     public function testGetHeaderWithoutSelectBox() {
