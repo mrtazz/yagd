@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/mrtazz/yagd/badge.svg?branch=master&service=github)](https://coveralls.io/github/mrtazz/yagd?branch=master)
 [![Code Climate](https://codeclimate.com/github/mrtazz/yagd/badges/gpa.svg)](https://codeclimate.com/github/mrtazz/yagd)
 [![Latest Stable Version](https://poser.pugx.org/mrtazz/yagd/v/stable)](https://packagist.org/packages/mrtazz/yagd)
-[![Latest Unstable Version](https://poser.pugx.org/mrtazz/yagd/v/unstable)](https://packagist.org/packages/mrtazz/yagd) [![License](https://poser.pugx.org/mrtazz/yagd/license)](https://packagist.org/packages/mrtazz/yagd)
+[![Latest Unstable Version](https://poser.pugx.org/mrtazz/yagd/v/unstable)](https://packagist.org/packages/mrtazz/yagd) [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ## Overview
 Yet Another Graphite Dashboard - because why not? It's heavily inspired by
