@@ -6,6 +6,7 @@ class GraphiteGraph
 {
 
     private $stacked = false;
+    protected $defaultTime = "4h";
 
     public function __construct(
         $graphitehost,
@@ -14,7 +15,10 @@ class GraphiteGraph
         $hideLegend = null,
         $width = null
     ) {
-        $this->from = $from ?: "-4h";
+        $this->from = filter_input(INPUT_GET, 'from');
+        if (!isset($this->from)) {
+            $this->from = "-" . $this->defaultTime;
+        }
         $this->width = $width ?: "400";
         $this->graphitehost = $graphitehost;
         $this->baseurl = $graphitehost . "/render?width={$this->width}&from={$this->from}&target={{THETARGET}}";

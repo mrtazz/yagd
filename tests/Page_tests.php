@@ -234,7 +234,7 @@ EOD;
     }
 
     public function testBuildPageForMetrics() {
-        $expct = '<div class="row"><div class="col-md-4"><img src="http://grpht.exmpl.com/render?width=400&from=-4hours&target=foo&hideLegend=true"></img></div><div class="col-md-4"><img src="http://grpht.exmpl.com/render?width=400&from=-4hours&target=bla&hideLegend=true"></img></div></div>';
+        $expct = '<div class="row"><div class="col-md-4"><img src="http://grpht.exmpl.com/render?width=400&from=-4h&target=foo&hideLegend=true"></img></div><div class="col-md-4"><img src="http://grpht.exmpl.com/render?width=400&from=-4h&target=bla&hideLegend=true"></img></div></div>';
         $ret = $this->page->buildPageForMetrics(["foo", "bla"]);
         $this->assertEquals($expct, $ret);
     }
